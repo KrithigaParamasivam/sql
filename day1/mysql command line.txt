@@ -1,0 +1,182 @@
+Enter password: ****
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 34
+Server version: 8.0.25 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2021, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> use sqlass;
+Database changed
+
+mysql> CREATE TABLE depart(DEPART_ID integer(4) PRIMARY KEY,DEPART_NAME varchar(30) NOT NULL, MANAGER_ID integer(6) UNIQUE);
+Query OK, 0 rows affected, 2 warnings (0.79 sec)
+
+mysql>
+mysql> CREATE TABLE employees(EMP_ID integer(6) PRIMARY KEY,EMP_NAME varchar(20), EMAIL character(25), PHONE_NUMBER varchar(10), DEPT_ID integer(4));
+Query OK, 0 rows affected, 2 warnings (0.09 sec)
+
+mysql> desc depart;
++-------------+-------------+------+-----+---------+-------+
+| Field       | Type        | Null | Key | Default | Extra |
++-------------+-------------+------+-----+---------+-------+
+| DEPART_ID   | int         | NO   | PRI | NULL    |       |
+| DEPART_NAME | varchar(30) | NO   |     | NULL    |       |
+| MANAGER_ID  | int         | YES  | UNI | NULL    |       |
++-------------+-------------+------+-----+---------+-------+
+3 rows in set (0.01 sec)
+
+mysql> desc employees;
++--------------+-------------+------+-----+---------+-------+
+| Field        | Type        | Null | Key | Default | Extra |
++--------------+-------------+------+-----+---------+-------+
+| EMP_ID       | int         | NO   | PRI | NULL    |       |
+| EMP_NAME     | varchar(20) | YES  |     | NULL    |       |
+| EMAIL        | char(25)    | YES  |     | NULL    |       |
+| PHONE_NUMBER | varchar(10) | YES  |     | NULL    |       |
+| DEPT_ID      | int         | YES  |     | NULL    |       |
++--------------+-------------+------+-----+---------+-------+
+5 rows in set (0.00 sec)
+
+mysql> alter table employees add salary decimal(8,2);
+Query OK, 0 rows affected (0.02 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc employees;
++--------------+--------------+------+-----+---------+-------+
+| Field        | Type         | Null | Key | Default | Extra |
++--------------+--------------+------+-----+---------+-------+
+| EMP_ID       | int          | NO   | PRI | NULL    |       |
+| EMP_NAME     | varchar(20)  | YES  |     | NULL    |       |
+| EMAIL        | char(25)     | YES  |     | NULL    |       |
+| PHONE_NUMBER | varchar(10)  | YES  |     | NULL    |       |
+| DEPT_ID      | int          | YES  |     | NULL    |       |
+| salary       | decimal(8,2) | YES  |     | NULL    |       |
++--------------+--------------+------+-----+---------+-------+
+6 rows in set (0.00 sec)
+
+mysql>  insert into depart(DEPART_ID,DEPART_NAME,MANAGER_ID) values (201,'css',01);
+Query OK, 1 row affected (0.00 sec)
+
+mysql>
+mysql>  insert into depart(DEPART_ID,DEPART_NAME,MANAGER_ID) values (202,'finance',02);
+Query OK, 1 row affected (0.00 sec)
+
+mysql>  insert into depart(DEPART_ID,DEPART_NAME,MANAGER_ID) values (203,'finance',03);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into employees(EMP_ID,EMP_NAME,EMAIL,PHONE_NUMBER,DEPT_ID,Salary) values (101,'krithiga','kiki@gmail.com',999786767,201,20000);
+Query OK, 1 row affected (0.01 sec)
+
+mysql>
+mysql>
+mysql>  insert into employees(EMP_ID,EMP_NAME,EMAIL,PHONE_NUMBER,DEPT_ID,Salary) values (102,'divya','divi@gmail.com',999786767,202,30000);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> alter table employees add constraint for_key foreign key(DEPT_Id) references depart(DEPART_ID);
+Query OK, 2 rows affected (0.14 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql>  insert into employees(EMP_ID,EMP_NAME,EMAIL,PHONE_NUMBER,DEPT_ID,Salary) values (104,'kiki','kiki@gmail.com',999786767,204,30000);
+ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`sqlass`.`employees`, CONSTRAINT `for_key` FOREIGN KEY (`DEPT_ID`) REFERENCES `depart` (`DEPART_ID`))
+mysql>
+mysql>
+mysql> alter table employees add constraint check_salary check(SALARY >10000);
+Query OK, 2 rows affected (0.09 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql>  insert into employees(EMP_ID,EMP_NAME,EMAIL,PHONE_NUMBER,DEPT_ID,Salary) values (103,'vaisu','vaisu@gmail.com',8867876776,203,5000);
+ERROR 3819 (HY000): Check constraint 'check_salary' is violated.
+mysql>
+mysql>
+mysql>  insert into employees(EMP_ID,EMP_NAME,EMAIL,PHONE_NUMBER,DEPT_ID,Salary) values (103,'vaisu','vaisu@gmail.com',8867876776,203,20000);
+Query OK, 1 row affected (0.01 sec)
+
+mysql>  select *from depart;
++-----------+-------------+------------+
+| DEPART_ID | DEPART_NAME | MANAGER_ID |
++-----------+-------------+------------+
+|       201 | css         |          1 |
+|       202 | finance     |          2 |
+|       203 | finance     |          3 |
++-----------+-------------+------------+
+3 rows in set (0.00 sec)
+
+mysql> select * from employees;
++--------+----------+-----------------+--------------+---------+----------+
+| EMP_ID | EMP_NAME | EMAIL           | PHONE_NUMBER | DEPT_ID | salary   |
++--------+----------+-----------------+--------------+---------+----------+
+|    101 | krithiga | kiki@gmail.com  | 999786767    |     201 | 20000.00 |
+|    102 | divya    | divi@gmail.com  | 999786767    |     202 | 30000.00 |
+|    103 | vaisu    | vaisu@gmail.com | 8867876776   |     203 | 20000.00 |
++--------+----------+-----------------+--------------+---------+----------+
+3 rows in set (0.00 sec)
+
+
+mysql> ALTER TABLE employees DROP COLUMN EMAIL;
+Query OK, 0 rows affected (0.15 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc employees;
++--------------+--------------+------+-----+---------+-------+
+| Field        | Type         | Null | Key | Default | Extra |
++--------------+--------------+------+-----+---------+-------+
+| EMP_ID       | int          | NO   | PRI | NULL    |       |
+| EMP_NAME     | varchar(20)  | YES  |     | NULL    |       |
+| PHONE_NUMBER | varchar(10)  | YES  |     | NULL    |       |
+| DEPT_ID      | int          | YES  | MUL | NULL    |       |
+| salary       | decimal(8,2) | YES  |     | NULL    |       |
++--------------+--------------+------+-----+---------+-------+
+5 rows in set (0.01 sec)
+
+mysql> Alter table employees rename to empl;
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> desc empl;
++--------------+--------------+------+-----+---------+-------+
+| Field        | Type         | Null | Key | Default | Extra |
++--------------+--------------+------+-----+---------+-------+
+| EMP_ID       | int          | NO   | PRI | NULL    |       |
+| EMP_NAME     | varchar(20)  | YES  |     | NULL    |       |
+| PHONE_NUMBER | varchar(10)  | YES  |     | NULL    |       |
+| DEPT_ID      | int          | YES  | MUL | NULL    |       |
+| salary       | decimal(8,2) | YES  |     | NULL    |       |
++--------------+--------------+------+-----+---------+-------+
+5 rows in set (0.00 sec)
+
+mysql> CREATE TABLE depart1(DEPART_ID number(4) PRIMARY KEY,DEPART_NAME varchar2(30) NOT NULL, MANAGER_ID number(6) UNIQUE);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'number(4) PRIMARY KEY,DEPART_NAME varchar2(30) NOT NULL, MANAGER_ID number(6) UN' at line 1
+mysql>
+mysql> CREATE TABLE depart1(DEPART_ID integer(4) PRIMARY KEY,DEPART_NAME varchar(30) NOT NULL, MANAGER_ID integer(6) UNIQUE);
+Query OK, 0 rows affected, 2 warnings (0.05 sec)
+
+mysql> drop table depart1;
+Query OK, 0 rows affected (0.03 sec)
+
+
+mysql> ALTER TABLE empl DROP CONSTRAINT for_key;
+Query OK, 0 rows affected (0.02 sec)
+
+
+mysql> CREATE TABLE depart1(DEPART_ID integer(4) PRIMARY KEY,DEPART_NAME varchar(30) NOT NULL, MANAGER_ID integer(6) UNIQUE);
+Query OK, 0 rows affected, 2 warnings (0.04 sec)
+
+mysql> desc depart1;
++-------------+-------------+------+-----+---------+-------+
+| Field       | Type        | Null | Key | Default | Extra |
++-------------+-------------+------+-----+---------+-------+
+| DEPART_ID   | int         | NO   | PRI | NULL    |       |
+| DEPART_NAME | varchar(30) | NO   |     | NULL    |       |
+| MANAGER_ID  | int         | YES  | UNI | NULL    |       |
++-------------+-------------+------+-----+---------+-------+
+3 rows in set (0.01 sec)
+
+mysql> drop table depart1;
+Query OK, 0 rows affected (0.05 sec)
+
+mysql>

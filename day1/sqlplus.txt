@@ -1,0 +1,197 @@
+
+SQL*Plus: Release 18.0.0.0.0 - Production on Tue Aug 3 15:08:02 2021
+Version 18.4.0.0.0
+
+Copyright (c) 1982, 2018, Oracle.  All rights reserved.
+
+Enter user-name: system
+Enter password:
+Last Successful login time: Tue Aug 03 2021 15:07:41 +05:30
+
+Connected to:
+Oracle Database 18c Express Edition Release 18.0.0.0.0 - Production
+Version 18.4.0.0.0
+
+SQL> CREATE TABLE depart(DEPART_ID number(4) PRIMARY KEY,DEPART_NAME varchar2(30) NOT NULL, MANAGER_ID number(6) UNIQUE);
+
+Table created.
+
+SQL> desc depart;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ DEPART_ID                                 NOT NULL NUMBER(4)
+ DEPART_NAME                               NOT NULL VARCHAR2(30)
+ MANAGER_ID                                         NUMBER(6)
+
+SQL> CREATE TABLE employees(EMP_ID number(6) PRIMARY KEY,EMP_NAME varchar2(20), EMAIL character(25), PHONE_NUMBER varchar2(10), DEPT_ID number(4));
+
+Table created.
+
+SQL> desc employees;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ EMP_ID                                    NOT NULL NUMBER(6)
+ EMP_NAME                                           VARCHAR2(20)
+ EMAIL                                              CHAR(25)
+ PHONE_NUMBER                                       VARCHAR2(10)
+ DEPT_ID                                            NUMBER(4)
+
+SQL> alter table employees add salary number(8,2);
+
+Table altered.
+
+SQL> desc employees;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ EMP_ID                                    NOT NULL NUMBER(6)
+ EMP_NAME                                           VARCHAR2(20)
+ EMAIL                                              CHAR(25)
+ PHONE_NUMBER                                       VARCHAR2(10)
+ DEPT_ID                                            NUMBER(4)
+ SALARY                                             NUMBER(8,2)
+
+SQL>  insert into depart(DEPART_ID,DEPART_NAME,MANAGER_ID) values (201,'css',01);
+
+1 row created.
+
+SQL>
+SQL>  insert into depart(DEPART_ID,DEPART_NAME,MANAGER_ID) values (202,'finance',02);
+
+1 row created.
+
+SQL>  insert into depart(DEPART_ID,DEPART_NAME,MANAGER_ID) values (203,'finance',03);
+
+1 row created.
+
+SQL> insert into employees(EMP_ID,EMP_NAME,EMAIL,PHONE_NUMBER,DEPT_ID,Salary) values (101,'krithiga','kiki@gmail.com',999786767,201,20000);
+
+1 row created.
+
+SQL>
+SQL>
+SQL>  insert into employees(EMP_ID,EMP_NAME,EMAIL,PHONE_NUMBER,DEPT_ID,Salary) values (102,'divya','divi@gmail.com',999786767,202,30000);
+
+1 row created.
+
+SQL> alter table employees add constraint for_key foreign key(DEPT_Id) references depart(DEPART_ID);
+
+Table altered.
+
+SQL>  insert into employees(EMP_ID,EMP_NAME,EMAIL,PHONE_NUMBER,DEPT_ID,Salary) values (104,'divya','divi@gmail.com',999786767,204,30000);
+ insert into employees(EMP_ID,EMP_NAME,EMAIL,PHONE_NUMBER,DEPT_ID,Salary) values (104,'divya','divi@gmail.com',999786767,204,30000)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (SYSTEM.FOR_KEY) violated - parent key not
+found
+
+
+SQL> alter table empl add constraint check_salary check(SALARY >10000);
+alter table empl add constraint check_salary check(SALARY >10000)
+*
+ERROR at line 1:
+ORA-00942: table or view does not exist
+
+
+SQL> alter table employees add constraint check_salary check(SALARY >10000);
+
+Table altered.
+
+SQL>  insert into employees(EMP_ID,EMP_NAME,EMAIL,PHONE_NUMBER,DEPT_ID,Salary) values (103,'vaisu','vaisu@gmail.com',999786767,203,3000);
+ insert into employees(EMP_ID,EMP_NAME,EMAIL,PHONE_NUMBER,DEPT_ID,Salary) values (103,'vaisu','vaisu@gmail.com',999786767,203,3000)
+*
+ERROR at line 1:
+ORA-02290: check constraint (SYSTEM.CHECK_SALARY) violated
+
+
+SQL>  insert into employees(EMP_ID,EMP_NAME,EMAIL,PHONE_NUMBER,DEPT_ID,Salary) values (103,'vaisu','vaisu@gmail.com',999786767,203,40000);
+
+1 row created.
+
+SQL> select*from employees;
+
+    EMP_ID EMP_NAME             EMAIL                     PHONE_NUMB    DEPT_ID
+---------- -------------------- ------------------------- ---------- ----------
+    SALARY
+----------
+       101 krithiga             kiki@gmail.com            999786767         201
+     20000
+
+       102 divya                divi@gmail.com            999786767         202
+     30000
+
+       103 vaisu                vaisu@gmail.com           999786767         203
+     40000
+
+
+SQL> select* from depart;
+
+ DEPART_ID DEPART_NAME                    MANAGER_ID
+---------- ------------------------------ ----------
+       201 css                                     1
+       202 finance                                 2
+       203 finance                                 3
+
+SQL> select*from employees;
+
+    EMP_ID EMP_NAME             EMAIL                     PHONE_NUMB    DEPT_ID
+---------- -------------------- ------------------------- ---------- ----------
+    SALARY
+----------
+       101 krithiga             kiki@gmail.com            999786767         201
+     20000
+
+       102 divya                divi@gmail.com            999786767         202
+     30000
+
+       103 vaisu                vaisu@gmail.com           999786767         203
+     40000
+
+
+SQL> ALTER TABLE employees DROP COLUMN EMAIL;
+
+Table altered.
+
+SQL> desc employees;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ EMP_ID                                    NOT NULL NUMBER(6)
+ EMP_NAME                                           VARCHAR2(20)
+ PHONE_NUMBER                                       VARCHAR2(10)
+ DEPT_ID                                            NUMBER(4)
+ SALARY                                             NUMBER(8,2)
+
+SQL> Alter table employees rename to empl;
+
+Table altered.
+
+SQL> desc empl;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ EMP_ID                                    NOT NULL NUMBER(6)
+ EMP_NAME                                           VARCHAR2(20)
+ PHONE_NUMBER                                       VARCHAR2(10)
+ DEPT_ID                                            NUMBER(4)
+ SALARY                                             NUMBER(8,2)
+
+
+SQL> CREATE TABLE depart1(DEPART_ID number(4) PRIMARY KEY,DEPART_NAME varchar2(30) NOT NULL, MANAGER_ID number(6) UNIQUE);
+
+Table created.
+
+SQL> desc depart1;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ DEPART_ID                                 NOT NULL NUMBER(4)
+ DEPART_NAME                               NOT NULL VARCHAR2(30)
+ MANAGER_ID                                         NUMBER(6)
+
+SQL> drop table depart1;
+
+Table dropped.
+
+SQL> desc depart1;
+ERROR:
+ORA-04043: object depart1 does not exist
+
+
+SQL>

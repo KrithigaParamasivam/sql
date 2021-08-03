@@ -1,0 +1,29 @@
+
+1)CREATE TABLE depart(DEPART_ID number(4) PRIMARY KEY,DEPART_NAME varchar2(30) NOT NULL, MANAGER_ID number(6) UNIQUE);
+
+desc depart;
+
+2)CREATE TABLE employees(EMP_ID number(6) PRIMARY KEY,EMP_NAME varchar2(20), EMAIL character(25), PHONE_NUMBER varchar2(10), DEPT_ID number(4));
+desc depart;
+
+desc employees;
+
+3)alter table employees add salary number(8,2);
+
+4)alter table employees add constraint for_key foreign key(DEPT_Id) references depart(DEPART_ID);
+
+//alter table employees enable constraint for_key;
+
+5)ALTER TABLE employees DROP CONSTRAINT for_key;
+
+6)ALTER TABLE employees DROP COLUMN EMAIL;
+
+7)alter table empl add constraint check_salary check(SALARY >10000);
+
+8)Alter table employees rename to empl;
+
+desc empl;
+
+9) CREATE TABLE depart1(DEPART_ID number(4) PRIMARY KEY,DEPART_NAME varchar2(30) NOT NULL, MANAGER_ID number(6) UNIQUE);
+
+10)drop table depart1;
