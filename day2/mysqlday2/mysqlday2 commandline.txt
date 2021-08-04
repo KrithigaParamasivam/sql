@@ -1,0 +1,321 @@
+Enter password: ****
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 29
+Server version: 8.0.25 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2021, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> use sqlass;
+Database changed
+mysql>
+mysql>  CREATE TABLE depart(DEPART_ID integer(4) PRIMARY KEY,DEPART_NAME varchar(30) NOT NULL, MANAGER_ID integer(6) UNIQUE);
+Query OK, 0 rows affected, 2 warnings (0.04 sec)
+
+mysql>  insert into depart(DEPART_ID,DEPART_NAME,MANAGER_ID) values (10,'purchase',123) ,(20,'inventory',345) ,(30,'sales',567), (40,'materials',789) ,(50,'production',911);
+Query OK, 5 rows affected (0.01 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> desc depart;
++-------------+-------------+------+-----+---------+-------+
+| Field       | Type        | Null | Key | Default | Extra |
++-------------+-------------+------+-----+---------+-------+
+| DEPART_ID   | int         | NO   | PRI | NULL    |       |
+| DEPART_NAME | varchar(30) | NO   |     | NULL    |       |
+| MANAGER_ID  | int         | YES  | UNI | NULL    |       |
++-------------+-------------+------+-----+---------+-------+
+3 rows in set (0.01 sec)
+
+mysql> select*frim depart;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'frim depart' at line 1
+mysql> select*from depart;
++-----------+-------------+------------+
+| DEPART_ID | DEPART_NAME | MANAGER_ID |
++-----------+-------------+------------+
+|        10 | purchase    |        123 |
+|        20 | inventory   |        345 |
+|        30 | sales       |        567 |
+|        40 | materials   |        789 |
+|        50 | production  |        911 |
++-----------+-------------+------------+
+5 rows in set (0.00 sec)
+
+mysql> CREATE TABLE employees(EMP_ID integer(6) PRIMARY KEY,EMP_NAME varchar(20), EMAIL character(25), PHONE_NUMBER varchar(10), DEPT_ID integer(4));
+Query OK, 0 rows affected, 2 warnings (0.04 sec)
+
+mysql> desc employees;
++--------------+-------------+------+-----+---------+-------+
+| Field        | Type        | Null | Key | Default | Extra |
++--------------+-------------+------+-----+---------+-------+
+| EMP_ID       | int         | NO   | PRI | NULL    |       |
+| EMP_NAME     | varchar(20) | YES  |     | NULL    |       |
+| EMAIL        | char(25)    | YES  |     | NULL    |       |
+| PHONE_NUMBER | varchar(10) | YES  |     | NULL    |       |
+| DEPT_ID      | int         | YES  |     | NULL    |       |
++--------------+-------------+------+-----+---------+-------+
+5 rows in set (0.01 sec)
+
+mysql> insert into employees(EMP_ID,EMP_NAME,EMAIL,PHONE_NUMBER,DEPT_ID,Salary) values (101,'Babu','babu101@gmail.com',9448341201,10,12000),(102,'Somu','somu102@gmail.com',9448534120,20,10000),(103,'Ramu','ramu103@gmail.com',9448886634,40,15000),(104,'Gobu','gobu104@gmail.com',9447783412,50,11500),(105,'Anbu','anbu105@gmail.com',9848341200,40,22000);
+ERROR 1054 (42S22): Unknown column 'Salary' in 'field list'
+mysql>
+mysql>  alter table employees add salary decimal(8,2);
+Query OK, 0 rows affected (0.04 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> insert into employees(EMP_ID,EMP_NAME,EMAIL,PHONE_NUMBER,DEPT_ID,Salary) values (101,'Babu','babu101@gmail.com',9448341201,10,12000),(102,'Somu','somu102@gmail.com',9448534120,20,10000),(103,'Ramu','ramu103@gmail.com',9448886634,40,15000),(104,'Gobu','gobu104@gmail.com',9447783412,50,11500),(105,'Anbu','anbu105@gmail.com',9848341200,40,22000);
+Query OK, 5 rows affected (0.00 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> desc employees;
++--------------+--------------+------+-----+---------+-------+
+| Field        | Type         | Null | Key | Default | Extra |
++--------------+--------------+------+-----+---------+-------+
+| EMP_ID       | int          | NO   | PRI | NULL    |       |
+| EMP_NAME     | varchar(20)  | YES  |     | NULL    |       |
+| EMAIL        | char(25)     | YES  |     | NULL    |       |
+| PHONE_NUMBER | varchar(10)  | YES  |     | NULL    |       |
+| DEPT_ID      | int          | YES  |     | NULL    |       |
+| salary       | decimal(8,2) | YES  |     | NULL    |       |
++--------------+--------------+------+-----+---------+-------+
+6 rows in set (0.00 sec)
+
+mysql> select*fro m employees;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'fro m employees' at line 1
+mysql> select*from employees;
++--------+----------+-------------------+--------------+---------+----------+
+| EMP_ID | EMP_NAME | EMAIL             | PHONE_NUMBER | DEPT_ID | salary   |
++--------+----------+-------------------+--------------+---------+----------+
+|    101 | Babu     | babu101@gmail.com | 9448341201   |      10 | 12000.00 |
+|    102 | Somu     | somu102@gmail.com | 9448534120   |      20 | 10000.00 |
+|    103 | Ramu     | ramu103@gmail.com | 9448886634   |      40 | 15000.00 |
+|    104 | Gobu     | gobu104@gmail.com | 9447783412   |      50 | 11500.00 |
+|    105 | Anbu     | anbu105@gmail.com | 9848341200   |      40 | 22000.00 |
++--------+----------+-------------------+--------------+---------+----------+
+5 rows in set (0.00 sec)
+
+mysql> select *from employee where dept_id=40;
+ERROR 1146 (42S02): Table 'sqlass.employee' doesn't exist
+mysql>
+mysql> select *from employees where dept_id=40;
++--------+----------+-------------------+--------------+---------+----------+
+| EMP_ID | EMP_NAME | EMAIL             | PHONE_NUMBER | DEPT_ID | salary   |
++--------+----------+-------------------+--------------+---------+----------+
+|    103 | Ramu     | ramu103@gmail.com | 9448886634   |      40 | 15000.00 |
+|    105 | Anbu     | anbu105@gmail.com | 9848341200   |      40 | 22000.00 |
++--------+----------+-------------------+--------------+---------+----------+
+2 rows in set (0.00 sec)
+
+mysql> select  dept_id,emp_name  from employees where dept_id=30;
+Empty set (0.00 sec)
+
+mysql> select* from employees where salary>15000 AND dept_id=40;
++--------+----------+-------------------+--------------+---------+----------+
+| EMP_ID | EMP_NAME | EMAIL             | PHONE_NUMBER | DEPT_ID | salary   |
++--------+----------+-------------------+--------------+---------+----------+
+|    105 | Anbu     | anbu105@gmail.com | 9848341200   |      40 | 22000.00 |
++--------+----------+-------------------+--------------+---------+----------+
+1 row in set (0.00 sec)
+
+mysql> select emp_name,dept_id,salary,salary*5/100 Bonus from employees;
++----------+---------+----------+-------------+
+| emp_name | dept_id | salary   | Bonus       |
++----------+---------+----------+-------------+
+| Babu     |      10 | 12000.00 |  600.000000 |
+| Somu     |      20 | 10000.00 |  500.000000 |
+| Ramu     |      40 | 15000.00 |  750.000000 |
+| Gobu     |      50 | 11500.00 |  575.000000 |
+| Anbu     |      40 | 22000.00 | 1100.000000 |
++----------+---------+----------+-------------+
+5 rows in set (0.00 sec)
+
+mysql> select emp_name from employees where emp_name like "r%";
++----------+
+| emp_name |
++----------+
+| Ramu     |
++----------+
+1 row in set (0.00 sec)
+
+mysql> select emp_id,emp_name,dept_id from employees where emp_name like "r%";
++--------+----------+---------+
+| emp_id | emp_name | dept_id |
++--------+----------+---------+
+|    103 | Ramu     |      40 |
++--------+----------+---------+
+1 row in set (0.00 sec)
+
+mysql> insert into employees(EMP_ID,EMP_NAME,EMAIL,PHONE_NUMBER,DEPT_ID,Salary) values (106,'suresh','suresh106@gmail.com',9448341201,30,12000);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> UPDATE employees SET salary= salary + (salary * 10 / 100) WHERE dept_id=30;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select*from employees;
++--------+----------+---------------------+--------------+---------+----------+
+| EMP_ID | EMP_NAME | EMAIL               | PHONE_NUMBER | DEPT_ID | salary   |
++--------+----------+---------------------+--------------+---------+----------+
+|    101 | Babu     | babu101@gmail.com   | 9448341201   |      10 | 12000.00 |
+|    102 | Somu     | somu102@gmail.com   | 9448534120   |      20 | 10000.00 |
+|    103 | Ramu     | ramu103@gmail.com   | 9448886634   |      40 | 15000.00 |
+|    104 | Gobu     | gobu104@gmail.com   | 9447783412   |      50 | 11500.00 |
+|    105 | Anbu     | anbu105@gmail.com   | 9848341200   |      40 | 22000.00 |
+|    106 | suresh   | suresh106@gmail.com | 9448341201   |      30 | 13200.00 |
++--------+----------+---------------------+--------------+---------+----------+
+6 rows in set (0.00 sec)
+
+mysql>  select emp_id,emp_name,dept_id,salary  from employees where dept_id=30;
++--------+----------+---------+----------+
+| emp_id | emp_name | dept_id | salary   |
++--------+----------+---------+----------+
+|    106 | suresh   |      30 | 13200.00 |
++--------+----------+---------+----------+
+1 row in set (0.00 sec)
+
+mysql> UPDATE employees SET salary= salary - (salary * 3 / 100) WHERE dept_id=20;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select&from employees;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '&from employees' at line 1
+mysql> select*from employees;
++--------+----------+---------------------+--------------+---------+----------+
+| EMP_ID | EMP_NAME | EMAIL               | PHONE_NUMBER | DEPT_ID | salary   |
++--------+----------+---------------------+--------------+---------+----------+
+|    101 | Babu     | babu101@gmail.com   | 9448341201   |      10 | 12000.00 |
+|    102 | Somu     | somu102@gmail.com   | 9448534120   |      20 |  9700.00 |
+|    103 | Ramu     | ramu103@gmail.com   | 9448886634   |      40 | 15000.00 |
+|    104 | Gobu     | gobu104@gmail.com   | 9447783412   |      50 | 11500.00 |
+|    105 | Anbu     | anbu105@gmail.com   | 9848341200   |      40 | 22000.00 |
+|    106 | suresh   | suresh106@gmail.com | 9448341201   |      30 | 13200.00 |
++--------+----------+---------------------+--------------+---------+----------+
+6 rows in set (0.00 sec)
+
+mysql> create table updatedemp select emp_id,emp_name,email from employees where dept_id>20;
+ERROR 1050 (42S01): Table 'updatedemp' already exists
+mysql> drop table updatedemp;
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> create table updatedemp select emp_id,emp_name,email from employees where dept_id>20;
+Query OK, 4 rows affected (0.03 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+mysql> select*from updatedemp;
++--------+----------+---------------------+
+| emp_id | emp_name | email               |
++--------+----------+---------------------+
+|    103 | Ramu     | ramu103@gmail.com   |
+|    104 | Gobu     | gobu104@gmail.com   |
+|    105 | Anbu     | anbu105@gmail.com   |
+|    106 | suresh   | suresh106@gmail.com |
++--------+----------+---------------------+
+4 rows in set (0.00 sec)
+
+mysql> create table updatedemp select emp_id,emp_name,email,dept_id from employees where dept_id>20;
+ERROR 1050 (42S01): Table 'updatedemp' already exists
+mysql> drop table updatedemp;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> create table updatedemp select emp_id,emp_name,email,dept_id from employees where dept_id>20;
+Query OK, 4 rows affected (0.03 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+mysql> select*from updatedemp;
++--------+----------+---------------------+---------+
+| emp_id | emp_name | email               | dept_id |
++--------+----------+---------------------+---------+
+|    103 | Ramu     | ramu103@gmail.com   |      40 |
+|    104 | Gobu     | gobu104@gmail.com   |      50 |
+|    105 | Anbu     | anbu105@gmail.com   |      40 |
+|    106 | suresh   | suresh106@gmail.com |      30 |
++--------+----------+---------------------+---------+
+4 rows in set (0.00 sec)
+
+mysql> DELETE FROM employees WHERE salary < 12000;
+Query OK, 2 rows affected (0.01 sec)
+
+mysql> select*from employees;
++--------+----------+---------------------+--------------+---------+----------+
+| EMP_ID | EMP_NAME | EMAIL               | PHONE_NUMBER | DEPT_ID | salary   |
++--------+----------+---------------------+--------------+---------+----------+
+|    101 | Babu     | babu101@gmail.com   | 9448341201   |      10 | 12000.00 |
+|    103 | Ramu     | ramu103@gmail.com   | 9448886634   |      40 | 15000.00 |
+|    105 | Anbu     | anbu105@gmail.com   | 9848341200   |      40 | 22000.00 |
+|    106 | suresh   | suresh106@gmail.com | 9448341201   |      30 | 13200.00 |
++--------+----------+---------------------+--------------+---------+----------+
+4 rows in set (0.00 sec)
+
+
+
+mysql> create table view_tab select*from updatedemp;
+Query OK, 4 rows affected (0.03 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+mysql> desc updatedemp;
++----------+-------------+------+-----+---------+-------+
+| Field    | Type        | Null | Key | Default | Extra |
++----------+-------------+------+-----+---------+-------+
+| emp_id   | int         | NO   |     | NULL    |       |
+| emp_name | varchar(20) | YES  |     | NULL    |       |
+| email    | char(25)    | YES  |     | NULL    |       |
+| dept_id  | int         | YES  |     | NULL    |       |
++----------+-------------+------+-----+---------+-------+
+4 rows in set (0.01 sec)
+
+mysql> select*from updatdemp;
+ERROR 1146 (42S02): Table 'sqlass.updatdemp' doesn't exist
+mysql> select*from updatedemp;
++--------+----------+---------------------+---------+
+| emp_id | emp_name | email               | dept_id |
++--------+----------+---------------------+---------+
+|    103 | Ramu     | ramu103@gmail.com   |      40 |
+|    104 | Gobu     | gobu104@gmail.com   |      50 |
+|    105 | Anbu     | anbu105@gmail.com   |      40 |
+|    106 | suresh   | suresh106@gmail.com |      30 |
++--------+----------+---------------------+---------+
+4 rows in set (0.00 sec)
+
+
+
+mysql> create view my_tab As select emp_id,emp_name,dept_id,salary from employees where salary>=10000;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> select*from my_tab;
++--------+----------+---------+----------+
+| emp_id | emp_name | dept_id | salary   |
++--------+----------+---------+----------+
+|    101 | Babu     |      10 | 12000.00 |
+|    103 | Ramu     |      40 | 15000.00 |
+|    105 | Anbu     |      40 | 22000.00 |
+|    106 | suresh   |      30 | 13200.00 |
++--------+----------+---------+----------+
+4 rows in set (0.01 sec)
+
+mysql> SELECT * FROM employees ORDER BY salary ASC;
++--------+----------+---------------------+--------------+---------+----------+
+| EMP_ID | EMP_NAME | EMAIL               | PHONE_NUMBER | DEPT_ID | salary   |
++--------+----------+---------------------+--------------+---------+----------+
+|    101 | Babu     | babu101@gmail.com   | 9448341201   |      10 | 12000.00 |
+|    106 | suresh   | suresh106@gmail.com | 9448341201   |      30 | 13200.00 |
+|    103 | Ramu     | ramu103@gmail.com   | 9448886634   |      40 | 15000.00 |
+|    105 | Anbu     | anbu105@gmail.com   | 9848341200   |      40 | 22000.00 |
++--------+----------+---------------------+--------------+---------+----------+
+4 rows in set (0.00 sec)
+
+mysql> SELECT * FROM employees ORDER BY emp_name DESC;
++--------+----------+---------------------+--------------+---------+----------+
+| EMP_ID | EMP_NAME | EMAIL               | PHONE_NUMBER | DEPT_ID | salary   |
++--------+----------+---------------------+--------------+---------+----------+
+|    106 | suresh   | suresh106@gmail.com | 9448341201   |      30 | 13200.00 |
+|    103 | Ramu     | ramu103@gmail.com   | 9448886634   |      40 | 15000.00 |
+|    101 | Babu     | babu101@gmail.com   | 9448341201   |      10 | 12000.00 |
+|    105 | Anbu     | anbu105@gmail.com   | 9848341200   |      40 | 22000.00 |
++--------+----------+---------------------+--------------+---------+----------+
+4 rows in set (0.00 sec)
+
+mysql>

@@ -1,0 +1,61 @@
+CREATE TABLE depart(DEPART_ID number(4) PRIMARY KEY,DEPART_NAME varchar2(30) NOT NULL, MANAGER_ID number(6) UNIQUE);
+
+desc depart
+
+CREATE TABLE employees(EMP_ID number(6) PRIMARY KEY,EMP_NAME varchar2(20), EMAIL character(25), PHONE_NUMBER varchar2(10), DEPT_ID number(4));
+
+desc employees;
+
+1)insert all into depart(DEPART_ID,DEPART_NAME,MANAGER_ID) values (10,'purchase',123) into depart (DEPART_ID,DEPART_NAME,MANAGER_ID) values(20,'inventory',345) into depart (DEPART_ID,DEPART_NAME,MANAGER_ID) values(30,'sales',567)into depart (DEPART_ID,DEPART_NAME,MANAGER_ID) values(40,'materials',789)into depart (DEPART_ID,DEPART_NAME,MANAGER_ID) values(50,'production',911)  SELECT * FROM dual;
+
+select*from depart;
+
+alter table employees add salary number(8,2);
+
+2)insert all into employees(EMP_ID,EMP_NAME,EMAIL,PHONE_NUMBER,DEPT_ID,Salary) values (101,'Babu','babu101@gmail.com',9448341201,10,12000) into employees (EMP_ID,EMP_NAME,EMAIL,PHONE_NUMBER,DEPT_ID,Salary) values (102,'Somu','somu102@gmail.com',9448534120,20,10000) into employees (EMP_ID,EMP_NAME,EMAIL,PHONE_NUMBER,DEPT_ID,Salary) values (103,'Ramu','ramu103@gmail.com',9448886634,40,15000) into employees (EMP_ID,EMP_NAME,EMAIL,PHONE_NUMBER,DEPT_ID,Salary) values (104,'Gobu','gobu104@gmail.com',9447783412,50,11500) into employees (EMP_ID,EMP_NAME,EMAIL,PHONE_NUMBER,DEPT_ID,Salary) values (105,'Anbu','anbu105@gmail.com',9848341200,40,22000) select* from dual;
+
+select*from employees;
+
+3) a)select *from employees where dept_id=40;
+   b)select  dept_id,emp_name  from employees where dept_id=30;
+   c)select* from employees where salary>15000 AND dept_id=40;
+   d)select emp_name,dept_id,salary,salary*5/100 Bonus from employees;
+   e)select emp_id,emp_name,dept_id from employees where emp_name like 'R%';
+
+//sales//insert into employees(EMP_ID,EMP_NAME,EMAIL,PHONE_NUMBER,DEPT_ID,Salary) values (106,'suresh','suresh106@gmail.com',9448341201,30,12000);
+ select*from employees;
+
+4) a)UPDATE employees SET salary= salary + (salary * 10 / 100) WHERE dept_id=30;
+
+//select emp_id,emp_name,dept_id,salary  from employees where dept_id=30;
+
+b)  UPDATE employees SET salary= salary - (salary * 3 / 100) WHERE dept_id=20;
+
+//select emp_id,emp_name,dept_id,salary  from employees where dept_id=20;
+
+5) create table updatedemp as select emp_id,emp_name,email,dept_id from employees where dept_id>20;
+
+// select*from updatedemp;
+
+6) DELETE FROM employees WHERE salary < 12000;
+
+// select*from employees;
+
+7)  create table view_tab as select*from updatedemp;
+
+//  select*from my_tab;
+
+8) create view my_tab As select emp_id,emp_name,dept_id,salary from employees where salary>=10000;
+
+//  select*from my_tab;
+
+9) SELECT * FROM employees ORDER BY salary ASC;
+
+10)  SELECT * FROM employees ORDER BY emp_name DESC;
+
+
+
+
+
+
+

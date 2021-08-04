@@ -1,0 +1,41 @@
+use database sqlass;
+CREATE TABLE depart(DEPART_ID integer(4) PRIMARY KEY,DEPART_NAME varchar(30) NOT NULL, MANAGER_ID integer(6) UNIQUE);
+CREATE TABLE employees(EMP_ID integer(6) PRIMARY KEY,EMP_NAME varchar(20), EMAIL character(25), PHONE_NUMBER varchar(10), DEPT_ID integer(4));
+
+ desc depart;
+
+1) insert into depart(DEPART_ID,DEPART_NAME,MANAGER_ID) values (10,'purchase',123) ,(20,'inventory',345) ,(30,'sales',567), (40,'materials',789) ,(50,'production',911);
+
+2) insert into employees(EMP_ID,EMP_NAME,EMAIL,PHONE_NUMBER,DEPT_ID,Salary) values (101,'Babu','babu101@gmail.com',9448341201,10,12000),(102,'Somu','somu102@gmail.com',9448534120,20,10000),(103,'Ramu','ramu103@gmail.com',9448886634,40,15000),(104,'Gobu','gobu104@gmail.com',9447783412,50,11500),(105,'Anbu','anbu105@gmail.com',9848341200,40,22000);
+
+ alter table employees add salary decimal(8,2);
+
+3) a) select *from employees where dept_id=40;
+   b) select  dept_id,emp_name  from employees where dept_id=30;
+   c) select* from employees where salary>15000 AND dept_id=40;
+   d) select emp_name,dept_id,salary,salary*5/100 Bonus from employees;
+   e) select emp_name from employees where emp_name like "r%";
+      select emp_id,emp_name,dept_id from employees where emp_name like "r%";
+
+ insert into employees(EMP_ID,EMP_NAME,EMAIL,PHONE_NUMBER,DEPT_ID,Salary) values (106,'suresh','suresh106@gmail.com',9448341201,30,12000);
+ select emp_id,emp_name,dept_id,salary  from employees where dept_id=30;
+
+4) a) UPDATE employees SET salary= salary + (salary * 10 / 100) WHERE dept_id=30;
+   b) UPDATE employees SET salary= salary - (salary * 3 / 100) WHERE dept_id=20;
+
+5) create table updatedemp select emp_id,emp_name,email,dept_id from employees where dept_id>20;
+
+6) DELETE FROM employees WHERE salary < 12000;
+
+7) create table view_tab select*from updatedemp;
+
+8) create view my_tab As select emp_id,emp_name,dept_id,salary from employees where salary>=10000;
+
+9) SELECT * FROM employees ORDER BY salary ASC;
+
+10) SELECT * FROM employees ORDER BY emp_name DESC;
+
+   
+
+
+
