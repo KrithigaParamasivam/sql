@@ -1,0 +1,185 @@
+set serveroutput on;
+
+1)Write a simple PL/SQL (Anonymous block) program to generate multiplication table for a given number.
+
+ declare
+    n number;
+    i number;
+    begin
+    n:=&n;
+    for i in 1..10
+    loop
+    dbms_output.put_line(n||' x '||i||' = '||n*i);
+    end loop;
+    end;
+    /
+
+
+2) Write a PL/SQL code to print first 50 whole numbers. Also insert the list in temp table which is created with only one column of number datatype.
+
+
+CREATE TABLE tempp ( item number, square number, CUBE number );
+DECLARE num number:=&num;
+ BEGIN
+INSERT INTO tempp
+VALUES(num,num*num,num*num*num);
+ END;
+/
+
+ CREATE TABLE temp ( WholeNumbers number);
+
+DECLARE
+    BEGIN
+    for i in 1..50
+    loop
+    INSERT INTO temp VALUES(i);
+    end loop;
+    END;
+    /
+
+PL/SQL procedure successfully completed.
+
+SQL> select*from temp;
+
+
+3) 
+
+
+
+4)Create a trigger for the employee table, which makes the entry in ENAME column in uppercase.
+
+CREATE OR REPLACE TRIGGER employees_insert_update
+ BEFORE INSERT OR UPDATE ON employees
+         FOR EACH ROW
+ DECLARE
+    dup_flag  INTEGER;
+  BEGIN
+      --Force all employee names to uppercase.
+       :NEW.emp_name := UPPER(:NEW.emp_name);
+   END;
+  /
+
+insert into employees values(107,'kavin','kavin@gmail.com',965874512,50,25000);
+select*from employees;
+
+
+5)Write a PL/SQL block to fire any two built in exceptions in ORACLE by assuming your own data in a table.
+
+
+DECLARE 
+   d_id depart.depart_id%type := 80; 
+   d_name depart.depart_name%type; 
+  d_mid depart.manager_id%type; 
+BEGIN 
+   SELECT depart_id,depart_name,manager_id into d_id,d_name,d_mid from depart
+   WHERE depart_id=d_id; 
+   DBMS_OUTPUT.PUT_LINE ('Dept Id: '|| d_id);
+   DBMS_OUTPUT.PUT_LINE ('Dept Name: '|| d_name); 
+   DBMS_OUTPUT.PUT_LINE ('Manager Id: ' || d_mid); 
+
+EXCEPTION 
+   WHEN no_data_found THEN 
+      dbms_output.put_line('No such Record with Dept_Id =80!'); 
+   WHEN others THEN 
+      dbms_output.put_line('Error!'); 
+END; 
+/
+
+
+//zero_divide exception
+
+> DECLARE
+       a int:=10;
+       b int:=0;
+       answer int;
+  
+    BEGIN
+       answer:=a/b;
+       dbms_output.put_line('the result after division is'||answer);
+  
+   exception
+      WHEN zero_divide THEN
+         dbms_output.put_line('number cannot divide by zero please check the values again');
+         dbms_output.put_line('the value of a is '||a);
+         dbms_output.put_line('the value of b is '||b);
+   END;
+   /
+dividing by zero please check the values again
+the value of a is 10
+the value of b is 0
+
+PL/SQL procedure successfully completed.
+
+
+6)Write a function in PL/SQL to check whether the given string is a palindrome or not. (Use any appropriate built-in functions available)
+
+DECLARE
+        len number;
+        palstr varchar2(20) := '&palstr';
+        chkstr varchar2(20);
+  
+    BEGIN
+        len := length(palstr);
+        for i in REVERSE 1..len loop
+         chkstr := chkstr||substr(palstr,i,1);
+       end loop;
+       if chkstr = palstr then
+        dbms_output.put_line(palstr||' is a PALINDROME');
+       else
+        dbms_output.put_line(palstr||' is not a PALINDROME');
+       end if;
+   END;
+   /
+Enter value for palstr: malayalam
+old   3:     palstr varchar2(20) := '&palstr';
+new   3:     palstr varchar2(20) := 'malayalam';
+malayalam is a PALINDROME
+
+PL/SQL procedure successfully completed.
+
+
+7)Write a PL/SQL block to fire any one user defined exception by assuming your own data in a table.
+
+DECLARE 
+   d_id depart.depart_id%type := &dd_id; 
+   d_name depart.depart_name%type; 
+   d_man depart.manager_id%type;  
+   -- user defined exception 
+   ex_invalid_id  EXCEPTION; 
+BEGIN 
+   IF d_id <= 0 THEN 
+      RAISE ex_invalid_id; 
+   ELSE 
+      SELECT depart_id,depart_name,manager_id into d_id,d_name,d_man from depart
+   WHERE depart_id=d_id; 
+   DBMS_OUTPUT.PUT_LINE ('Dept Id: '|| d_id);
+   DBMS_OUTPUT.PUT_LINE ('Dept Name: '|| d_name); 
+   DBMS_OUTPUT.PUT_LINE ('Manager Id: ' || d_man); 
+   END IF; 
+
+EXCEPTION 
+   WHEN ex_invalid_id THEN 
+      dbms_output.put_line('ID must be greater than zero!'); 
+   WHEN no_data_found THEN 
+      dbms_output.put_line('No such employee found!'); 
+   WHEN others THEN 
+      dbms_output.put_line('Error!');  
+END; 
+/
+
+8)Write a named procedure to delete records available in your table.
+
+
+ DECLARE
+    a number:=&a;  
+    PROCEDURE delete_record(x IN number) IS
+    BEGIN
+      delete from student where stu_id=x;
+    END;
+    BEGIN
+      delete_record(a);
+   END;
+   /
+Enter value for a: 40
+old   2:    a number:=&a;
+new   2:    a number:=40;

@@ -1,0 +1,429 @@
+
+SQL*Plus: Release 18.0.0.0.0 - Production on Thu Aug 5 15:14:51 2021
+Version 18.4.0.0.0
+
+Copyright (c) 1982, 2018, Oracle.  All rights reserved.
+
+Enter user-name: system
+Enter password:
+Last Successful login time: Thu Aug 05 2021 14:33:34 +05:30
+
+Connected to:
+Oracle Database 18c Express Edition Release 18.0.0.0.0 - Production
+Version 18.4.0.0.0
+
+SQL> set serveroutput on;
+SQL> declare
+  2      n number;
+  3      i number;
+  4      begin
+  5      n:=&n;
+  6      for i in 1..10
+  7      loop
+  8      dbms_output.put_line(n||' x '||i||' = '||n*i);
+  9      end loop;
+ 10      end;
+ 11      /
+Enter value for n: 5
+old   5:     n:=&n;
+new   5:     n:=5;
+5 x 1 = 5
+5 x 2 = 10
+5 x 3 = 15
+5 x 4 = 20
+5 x 5 = 25
+5 x 6 = 30
+5 x 7 = 35
+5 x 8 = 40
+5 x 9 = 45
+5 x 10 = 50
+
+PL/SQL procedure successfully completed.
+
+SQL> CREATE TABLE temp ( WholeNumbers number);
+
+Table created.
+
+SQL> DECLARE
+  2      BEGIN
+  3      for i in 1..50
+  4      loop
+  5      INSERT INTO temp VALUES(i);
+  6      end loop;
+  7      END;
+  8      /
+
+PL/SQL procedure successfully completed.
+
+SQL> select*from temp;
+
+WHOLENUMBERS
+------------
+           1
+           2
+           3
+           4
+           5
+           6
+           7
+           8
+           9
+          10
+          11
+
+WHOLENUMBERS
+------------
+          12
+          13
+          14
+          15
+          16
+          17
+          18
+          19
+          20
+          21
+          22
+
+WHOLENUMBERS
+------------
+          23
+          24
+          25
+          26
+          27
+          28
+          29
+          30
+          31
+          32
+          33
+
+WHOLENUMBERS
+------------
+          34
+          35
+          36
+          37
+          38
+          39
+          40
+          41
+          42
+          43
+          44
+
+WHOLENUMBERS
+------------
+          45
+          46
+          47
+          48
+          49
+          50
+
+50 rows selected.
+
+SQL> CREATE OR REPLACE TRIGGER employees_insert_update
+  2   BEFORE INSERT OR UPDATE ON employees
+  3           FOR EACH ROW
+  4   DECLARE
+  5      dup_flag  INTEGER;
+  6    BEGIN
+  7        --Force all employee names to uppercase.
+  8         :NEW.emp_name := UPPER(:NEW.emp_name);
+  9     END;
+ 10    /
+
+Trigger created.
+
+SQL> insert into employees values(107,'vaisu','vaisu@gmail.com',965874512,50,25000);
+insert into employees values(107,'vaisu','vaisu@gmail.com',965874512,50,25000)
+*
+ERROR at line 1:
+ORA-00001: unique constraint (SYSTEM.SYS_C007459) violated
+
+
+SQL> insert into employees values(108,'kavin','vaisu@gmail.com',965874512,70,25000);
+
+1 row created.
+
+SQL> select *from employees;
+
+    EMP_ID EMP_NAME             EMAIL                     PHONE_NUMB    DEPT_ID
+---------- -------------------- ------------------------- ---------- ----------
+    SALARY
+----------
+       101 Babu                 babu101@gmail.com         9448341201         10
+     12000
+
+       108 KAVIN                vaisu@gmail.com           965874512          70
+     25000
+
+       103 Ramu                 ramu103@gmail.com         9448886634         40
+     15000
+
+
+    EMP_ID EMP_NAME             EMAIL                     PHONE_NUMB    DEPT_ID
+---------- -------------------- ------------------------- ---------- ----------
+    SALARY
+----------
+       105 Anbu                 anbu105@gmail.com         9848341200         40
+     22000
+
+       106 suresh               suresh106@gmail.com       9448341201         30
+     13200
+
+       107 VAISU                vaisu@gmail.com           9658745128         70
+     25000
+
+
+6 rows selected.
+
+SQL> insert into employees values(109,'shalini','shalini@gmail.com',965874512,80,25000);
+
+1 row created.
+
+SQL> select *from employees;
+
+    EMP_ID EMP_NAME             EMAIL                     PHONE_NUMB    DEPT_ID
+---------- -------------------- ------------------------- ---------- ----------
+    SALARY
+----------
+       101 Babu                 babu101@gmail.com         9448341201         10
+     12000
+
+       108 KAVIN                vaisu@gmail.com           965874512          70
+     25000
+
+       103 Ramu                 ramu103@gmail.com         9448886634         40
+     15000
+
+
+    EMP_ID EMP_NAME             EMAIL                     PHONE_NUMB    DEPT_ID
+---------- -------------------- ------------------------- ---------- ----------
+    SALARY
+----------
+       109 SHALINI              shalini@gmail.com         965874512          80
+     25000
+
+       105 Anbu                 anbu105@gmail.com         9848341200         40
+     22000
+
+       106 suresh               suresh106@gmail.com       9448341201         30
+     13200
+
+
+    EMP_ID EMP_NAME             EMAIL                     PHONE_NUMB    DEPT_ID
+---------- -------------------- ------------------------- ---------- ----------
+    SALARY
+----------
+       107 VAISU                vaisu@gmail.com           9658745128         70
+     25000
+
+
+7 rows selected.
+
+SQL> DECLARE
+  2          len number;
+  3          palstr varchar2(20) := '&palstr';
+  4          chkstr varchar2(20);
+  5
+  6      BEGIN
+  7          len := length(palstr);
+  8          for i in REVERSE 1..len loop
+  9           chkstr := chkstr||substr(palstr,i,1);
+ 10         end loop;
+ 11         if chkstr = palstr then
+ 12          dbms_output.put_line(palstr||' is a PALINDROME');
+ 13         else
+ 14          dbms_output.put_line(palstr||' is not a PALINDROME');
+ 15         end if;
+ 16     END;
+ 17     /
+Enter value for palstr: malayalam
+old   3:         palstr varchar2(20) := '&palstr';
+new   3:         palstr varchar2(20) := 'malayalam';
+malayalam is a PALINDROME
+
+PL/SQL procedure successfully completed.
+
+SQL> DECLARE
+  2          len number;
+  3          palstr varchar2(20) := '&palstr';
+  4          chkstr varchar2(20);
+  5
+  6      BEGIN
+  7          len := length(palstr);
+  8          for i in REVERSE 1..len loop
+  9           chkstr := chkstr||substr(palstr,i,1);
+ 10         end loop;
+ 11         if chkstr = palstr then
+ 12          dbms_output.put_line(palstr||' is a PALINDROME');
+ 13         else
+ 14          dbms_output.put_line(palstr||' is not a PALINDROME');
+ 15         end if;
+ 16     END;
+ 17     /
+Enter value for palstr: krithiga
+old   3:         palstr varchar2(20) := '&palstr';
+new   3:         palstr varchar2(20) := 'krithiga';
+krithiga is not a PALINDROME
+
+PL/SQL procedure successfully completed.
+
+SQL> DECLARE
+  2     d_id depart.depart_id%type := 80;
+  3     d_name depart.depart_name%type;
+  4    d_mid depart.manager_id%type;
+  5  BEGIN
+  6     SELECT depart_id,depart_name,manager_id into d_id,d_name,d_mid from depart
+  7     WHERE depart_id=d_id;
+  8     DBMS_OUTPUT.PUT_LINE ('Dept Id: '|| d_id);
+  9     DBMS_OUTPUT.PUT_LINE ('Dept Name: '|| d_name);
+ 10     DBMS_OUTPUT.PUT_LINE ('Manager Id: ' || d_mid);
+ 11
+ 12  EXCEPTION
+ 13     WHEN no_data_found THEN
+ 14        dbms_output.put_line('No such Record with Dept_Id =80!');
+ 15     WHEN others THEN
+ 16        dbms_output.put_line('Error!');
+ 17  END;
+ 18  /
+No such Record with Dept_Id =80!
+
+PL/SQL procedure successfully completed.
+
+SQL>  DECLARE
+  2         a int:=10;
+  3         b int:=0;
+  4         answer int;
+  5
+  6      BEGIN
+  7         answer:=a/b;
+  8         dbms_output.put_line('the result after division is'||answer);
+  9
+ 10     exception
+ 11        WHEN zero_divide THEN
+ 12           dbms_output.put_line('number cannot divide by zero please check the values again');
+ 13           dbms_output.put_line('the value of a is '||a);
+ 14           dbms_output.put_line('the value of b is '||b);
+ 15     END;
+ 16     /
+number cannot divide by zero please check the values again
+the value of a is 10
+the value of b is 0
+
+PL/SQL procedure successfully completed.
+
+SQL> DECLARE
+  2     d_id depart.depart_id%type := &dd_id;
+  3     d_name depart.depart_name%type;
+  4     d_man depart.manager_id%type;
+  5     -- user defined exception
+  6     ex_invalid_id  EXCEPTION;
+  7  BEGIN
+  8     IF d_id <= 0 THEN
+  9        RAISE ex_invalid_id;
+ 10     ELSE
+ 11        SELECT depart_id,depart_name,manager_id into d_id,d_name,d_man from depart
+ 12     WHERE depart_id=d_id;
+ 13     DBMS_OUTPUT.PUT_LINE ('Dept Id: '|| d_id);
+ 14     DBMS_OUTPUT.PUT_LINE ('Dept Name: '|| d_name);
+ 15     DBMS_OUTPUT.PUT_LINE ('Manager Id: ' || d_man);
+ 16     END IF;
+ 17
+ 18  EXCEPTION
+ 19     WHEN ex_invalid_id THEN
+ 20        dbms_output.put_line('ID must be greater than zero!');
+ 21     WHEN no_data_found THEN
+ 22        dbms_output.put_line('No such employee found!');
+ 23     WHEN others THEN
+ 24        dbms_output.put_line('Error!');
+ 25  END;
+ 26  /
+Enter value for dd_id: 0
+old   2:    d_id depart.depart_id%type := &dd_id;
+new   2:    d_id depart.depart_id%type := 0;
+ID must be greater than zero!
+
+PL/SQL procedure successfully completed.
+
+SQL> select*from depart;
+
+ DEPART_ID DEPART_NAME                    MANAGER_ID
+---------- ------------------------------ ----------
+        10 purchase                              123
+        20 inventory                             345
+        30 sales                                 567
+        40 materials                             789
+        50 production                            911
+
+SQL> select*from student;
+
+    STU_ID STU_NAME                       SEX
+---------- ------------------------------ ------------------------------
+ TOT_MARKS
+----------
+        10 Anu                            Female
+       553
+
+        20 Anbu                           Male
+       345
+
+        30 Malini                         Female
+       567
+
+
+    STU_ID STU_NAME                       SEX
+---------- ------------------------------ ------------------------------
+ TOT_MARKS
+----------
+        40 Sankar                         Male
+       590
+
+        60 vaisu                          Female
+       553
+
+
+SQL>  DECLARE
+  2      a number:=&a;
+  3      PROCEDURE delete_record(x IN number) IS
+  4      BEGIN
+  5        delete from student where stu_id=x;
+  6      END;
+  7      BEGIN
+  8        delete_record(a);
+  9     END;
+ 10     /
+Enter value for a: 40
+old   2:     a number:=&a;
+new   2:     a number:=40;
+
+PL/SQL procedure successfully completed.
+
+SQL> select*from student;
+
+    STU_ID STU_NAME                       SEX
+---------- ------------------------------ ------------------------------
+ TOT_MARKS
+----------
+        10 Anu                            Female
+       553
+
+        20 Anbu                           Male
+       345
+
+        30 Malini                         Female
+       567
+
+
+    STU_ID STU_NAME                       SEX
+---------- ------------------------------ ------------------------------
+ TOT_MARKS
+----------
+        60 vaisu                          Female
+       553
+
+
+SQL>
