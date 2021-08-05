@@ -1,0 +1,484 @@
+
+SQL*Plus: Release 18.0.0.0.0 - Production on Thu Aug 5 13:49:20 2021
+Version 18.4.0.0.0
+
+Copyright (c) 1982, 2018, Oracle.  All rights reserved.
+
+Enter user-name: system
+Enter password:
+Last Successful login time: Thu Aug 05 2021 13:46:45 +05:30
+
+Connected to:
+Oracle Database 18c Express Edition Release 18.0.0.0.0 - Production
+Version 18.4.0.0.0
+
+SQL> CREATE TABLE student(stu_id number(4) PRIMARY KEY,stu_name varchar2(30) NOT NULL, sex varchar2(30),Tot_marks number(6));
+
+Table created.
+
+SQL> INSERT ALL into student(stu_id,stu_name,sex,Tot_marks) values (10,'Anu','Female',553)into student (stu_id,stu_name,sex,Tot_marks) values(20,'Anbu','Male',345)  into student(stu_id,stu_name,sex,Tot_marks) values (30,'Malini','Female',567)  into student(stu_id,stu_name,sex,Tot_marks) values (40,'Sankar','Male',590) into student(stu_id,stu_name,sex,Tot_marks)  values (50,'varshan','Male',587)   SELECT * FROM dual;
+
+5 rows created.
+
+SQL> desc student;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ STU_ID                                    NOT NULL NUMBER(4)
+ STU_NAME                                  NOT NULL VARCHAR2(30)
+ SEX                                                VARCHAR2(30)
+ TOT_MARKS                                          NUMBER(6)
+
+SQL> select*from student;
+
+    STU_ID STU_NAME                       SEX
+---------- ------------------------------ ------------------------------
+ TOT_MARKS
+----------
+        10 Anu                            Female
+       553
+
+        20 Anbu                           Male
+       345
+
+        30 Malini                         Female
+       567
+
+
+    STU_ID STU_NAME                       SEX
+---------- ------------------------------ ------------------------------
+ TOT_MARKS
+----------
+        40 Sankar                         Male
+       590
+
+        50 varshan                        Male
+       587
+
+
+SQL> select max (Tot_marks)from student;
+
+MAX(TOT_MARKS)
+--------------
+           590
+
+SQL> select sex,count(*)from student group by sex;
+
+SEX                              COUNT(*)
+------------------------------ ----------
+Male                                    3
+Female                                  2
+
+SQL> SELECT avg(Tot_marks ) FROM student;
+
+AVG(TOT_MARKS)
+--------------
+         528.4
+
+SQL> SELECT sex,avg(Tot_marks ) FROM student group by sex;
+
+SEX                            AVG(TOT_MARKS)
+------------------------------ --------------
+Male                               507.333333
+Female                                    560
+
+SQL> select * from student where Tot_marks>(select avg(Tot_marks) from student);
+
+    STU_ID STU_NAME                       SEX
+---------- ------------------------------ ------------------------------
+ TOT_MARKS
+----------
+        10 Anu                            Female
+       553
+
+        30 Malini                         Female
+       567
+
+        40 Sankar                         Male
+       590
+
+
+    STU_ID STU_NAME                       SEX
+---------- ------------------------------ ------------------------------
+ TOT_MARKS
+----------
+        50 varshan                        Male
+       587
+
+
+SQL> select * from student where stu_name like '___';
+
+    STU_ID STU_NAME                       SEX
+---------- ------------------------------ ------------------------------
+ TOT_MARKS
+----------
+        10 Anu                            Female
+       553
+
+
+SQL> SELECT * FROM student ORDER BY sex ASC,Tot_marks DESC;
+
+    STU_ID STU_NAME                       SEX
+---------- ------------------------------ ------------------------------
+ TOT_MARKS
+----------
+        30 Malini                         Female
+       567
+
+        10 Anu                            Female
+       553
+
+        40 Sankar                         Male
+       590
+
+
+    STU_ID STU_NAME                       SEX
+---------- ------------------------------ ------------------------------
+ TOT_MARKS
+----------
+        50 varshan                        Male
+       587
+
+        20 Anbu                           Male
+       345
+
+
+SQL> SELECT MAX(Tot_marks) - MIN(Tot_marks) DIFFERENCE FROM student;
+
+DIFFERENCE
+----------
+       245
+
+SQL> CREATE VIEW my_tab AS SELECT * FROM student WHERE Tot_marks>500 and sex='Female' WITH CHECK OPTION;
+
+View created.
+
+SQL> select* from my_tab;
+
+    STU_ID STU_NAME                       SEX
+---------- ------------------------------ ------------------------------
+ TOT_MARKS
+----------
+        10 Anu                            Female
+       553
+
+        30 Malini                         Female
+       567
+
+
+SQL> INSERT into my_tab(stu_id,stu_name,sex,Tot_marks) values (70,'krithi','Female',600);
+
+1 row created.
+
+SQL> select*from my_tab;
+
+    STU_ID STU_NAME                       SEX
+---------- ------------------------------ ------------------------------
+ TOT_MARKS
+----------
+        10 Anu                            Female
+       553
+
+        30 Malini                         Female
+       567
+
+        70 krithi                         Female
+       600
+
+
+SQL> INSERT into my_tab(stu_id,stu_name,sex,Tot_marks) values (80,'sara','Female',300);
+INSERT into my_tab(stu_id,stu_name,sex,Tot_marks) values (80,'sara','Female',300)
+            *
+ERROR at line 1:
+ORA-01402: view WITH CHECK OPTION where-clause violation
+
+
+SQL> select*from student;
+
+    STU_ID STU_NAME                       SEX
+---------- ------------------------------ ------------------------------
+ TOT_MARKS
+----------
+        10 Anu                            Female
+       553
+
+        20 Anbu                           Male
+       345
+
+        30 Malini                         Female
+       567
+
+
+    STU_ID STU_NAME                       SEX
+---------- ------------------------------ ------------------------------
+ TOT_MARKS
+----------
+        40 Sankar                         Male
+       590
+
+        50 varshan                        Male
+       587
+
+        70 krithi                         Female
+       600
+
+
+6 rows selected.
+
+SQL> INSERT ALL into student(stu_id,stu_name,sex,Tot_marks) values (60,'vaisu','Female',553)into student (stu_id,stu_name,sex,Tot_marks) values(70,'sakthi','Male',345)  into student(stu_id,stu_name,sex,Tot_marks) values (80,'brindha','Female',567)   SELECT * FROM dual;
+INSERT ALL into student(stu_id,stu_name,sex,Tot_marks) values (60,'vaisu','Female',553)into student (stu_id,stu_name,sex,Tot_marks) values(70,'sakthi','Male',345)  into student(stu_id,stu_name,sex,Tot_marks) values (80,'brindha','Female',567)   SELECT * FROM dual
+*
+ERROR at line 1:
+ORA-00001: unique constraint (SYSTEM.SYS_C007541) violated
+
+
+SQL> delete from student where stu_id=70;
+
+1 row deleted.
+
+SQL> INSERT ALL into student(stu_id,stu_name,sex,Tot_marks) values (60,'vaisu','Female',553)into student (stu_id,stu_name,sex,Tot_marks) values(70,'sakthi','Male',345)  into student(stu_id,stu_name,sex,Tot_marks) values (80,'brindha','Female',567)   SELECT * FROM dual;
+
+3 rows created.
+
+SQL> select*from student;
+
+    STU_ID STU_NAME                       SEX
+---------- ------------------------------ ------------------------------
+ TOT_MARKS
+----------
+        10 Anu                            Female
+       553
+
+        20 Anbu                           Male
+       345
+
+        30 Malini                         Female
+       567
+
+
+    STU_ID STU_NAME                       SEX
+---------- ------------------------------ ------------------------------
+ TOT_MARKS
+----------
+        40 Sankar                         Male
+       590
+
+        50 varshan                        Male
+       587
+
+        60 vaisu                          Female
+       553
+
+
+    STU_ID STU_NAME                       SEX
+---------- ------------------------------ ------------------------------
+ TOT_MARKS
+----------
+        70 sakthi                         Male
+       345
+
+        80 brindha                        Female
+       567
+
+
+8 rows selected.
+
+SQL> SAVEPOINT s1;
+
+Savepoint created.
+
+SQL> delete from student where stu_id=80;
+
+1 row deleted.
+
+SQL>
+SQL> delete from student where stu_id=70;
+
+1 row deleted.
+
+SQL> ROLLBACK to s1;
+
+Rollback complete.
+
+SQL> select*from student;
+
+    STU_ID STU_NAME                       SEX
+---------- ------------------------------ ------------------------------
+ TOT_MARKS
+----------
+        10 Anu                            Female
+       553
+
+        20 Anbu                           Male
+       345
+
+        30 Malini                         Female
+       567
+
+
+    STU_ID STU_NAME                       SEX
+---------- ------------------------------ ------------------------------
+ TOT_MARKS
+----------
+        40 Sankar                         Male
+       590
+
+        50 varshan                        Male
+       587
+
+        60 vaisu                          Female
+       553
+
+
+    STU_ID STU_NAME                       SEX
+---------- ------------------------------ ------------------------------
+ TOT_MARKS
+----------
+        70 sakthi                         Male
+       345
+
+        80 brindha                        Female
+       567
+
+
+8 rows selected.
+
+SQL> delete from student where stu_id=70;
+
+1 row deleted.
+
+SQL> delete from student where stu_id=80;
+
+1 row deleted.
+
+SQL> commit;
+
+Commit complete.
+
+SQL> select*from student;
+
+    STU_ID STU_NAME                       SEX
+---------- ------------------------------ ------------------------------
+ TOT_MARKS
+----------
+        10 Anu                            Female
+       553
+
+        20 Anbu                           Male
+       345
+
+        30 Malini                         Female
+       567
+
+
+    STU_ID STU_NAME                       SEX
+---------- ------------------------------ ------------------------------
+ TOT_MARKS
+----------
+        40 Sankar                         Male
+       590
+
+        50 varshan                        Male
+       587
+
+        60 vaisu                          Female
+       553
+
+
+6 rows selected.
+
+SQL> ROLLBACK to s1;
+ROLLBACK to s1
+*
+ERROR at line 1:
+ORA-01086: savepoint 'S1' never established in this session or is invalid
+
+
+SQL>  DECLARE
+  2        a NUMBER:= 5;
+  3        b NUMBER:= 6;
+  4      BEGIN
+  5        CASE a
+  6        when 5 then dbms_output.put_line(' Square of (5): ' || a*a);
+  7         END CASE;
+  8           CASE b
+  9         when 6 then dbms_output.put_line(' cube of (6): ' || b*b*b);
+ 10       END CASE;
+ 11    END;
+ 12     /
+
+PL/SQL procedure successfully completed.
+
+SQL>  set serveroutput on;
+SQL>
+SQL>     DECLARE
+  2        a NUMBER:= 5;
+  3        b NUMBER:= 6;
+  4      BEGIN
+  5        CASE a
+  6        when 5 then dbms_output.put_line(' Square of (5): ' || a*a);
+  7         END CASE;
+  8           CASE b
+  9         when 6 then dbms_output.put_line(' cube of (6): ' || b*b*b);
+ 10       END CASE;
+ 11    END;
+ 12     /
+Square of (5): 25
+cube of (6): 216
+
+PL/SQL procedure successfully completed.
+
+SQL> SELECT * FROM student ORDER BY Tot_marks DESC;
+
+    STU_ID STU_NAME                       SEX
+---------- ------------------------------ ------------------------------
+ TOT_MARKS
+----------
+        40 Sankar                         Male
+       590
+
+        30 Malini                         Female
+       567
+
+        60 vaisu                          Female
+       553
+
+
+    STU_ID STU_NAME                       SEX
+---------- ------------------------------ ------------------------------
+ TOT_MARKS
+----------
+        10 Anu                            Female
+       553
+
+        20 Anbu                           Male
+       345
+
+
+SQL> SELECT * FROM student ORDER BY sex ASC;
+
+    STU_ID STU_NAME                       SEX
+---------- ------------------------------ ------------------------------
+ TOT_MARKS
+----------
+        10 Anu                            Female
+       553
+
+        30 Malini                         Female
+       567
+
+        60 vaisu                          Female
+       553
+
+
+    STU_ID STU_NAME                       SEX
+---------- ------------------------------ ------------------------------
+ TOT_MARKS
+----------
+        40 Sankar                         Male
+       590
+
+        20 Anbu                           Male
+       345
+
+
+SQL>

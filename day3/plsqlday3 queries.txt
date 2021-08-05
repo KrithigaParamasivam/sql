@@ -1,0 +1,82 @@
+1)CREATE TABLE student(stu_id number(4) PRIMARY KEY,stu_name varchar2(30) NOT NULL, sex varchar2(30),Tot_marks number(6));
+
+INSERT ALL into student(stu_id,stu_name,sex,Tot_marks) values (10,'Anu','Female',553)into student (stu_id,stu_name,sex,Tot_marks) values(20,'Anbu','Male',345)  into student(stu_id,stu_name,sex,Tot_marks) values (30,'Malini','Female',567)  into student(stu_id,stu_name,sex,Tot_marks) values (40,'Sankar','Male',590) into student(stu_id,stu_name,sex,Tot_marks)  values (50,'varshan','Male',587)   SELECT * FROM dual;
+
+1) a) select max (Tot_marks)from student;
+
+   b) select sex,count(*)from student group by sex;
+
+   c) SELECT sex,avg(Tot_marks ) FROM student group by sex;
+
+      SELECT avg(Tot_marks ) FROM student;
+
+d) select * from student where Tot_marks>(select avg(Tot_marks) from student);
+
+e) select stu_name,total_mark, avg(total_mark) as average from student group by stu_name having average >(select avg(total_mark) from student);
+
+2) a) select * from student where stu_name like '___';
+   b) SELECT * FROM student ORDER BY sex ASC,Tot_marks DESC;
+SELECT * FROM student ORDER BY Tot_marks DESC;
+SELECT * FROM student ORDER BY sex ASC;
+
+3) SELECT MAX(Tot_marks) - MIN(Tot_marks) DIFFERENCE FROM student;
+SELECT MAX(Tot_marks) - MIN(Tot_marks)FROM student;
+
+4)CREATE VIEW my_tab AS SELECT * FROM student WHERE Tot_marks>500 and sex='Female' WITH CHECK OPTION;
+select*from my_tab;
+INSERT into my_tab(stu_id,stu_name,sex,Tot_marks) values (60,'sakthi','Male',600);//error
+INSERT into my_tab(stu_id,stu_name,sex,Tot_marks) values (70,'krithi','Female',600);//inserted
+INSERT into my_tab(stu_id,stu_name,sex,Tot_marks) values (80,'sara','Female',300);//error
+
+
+5)select*from student;
+
+//START TRANSACTION;
+
+INSERT ALL into student(stu_id,stu_name,sex,Tot_marks) values (60,'vaisu','Female',553)into student (stu_id,stu_name,sex,Tot_marks) values(70,'sakthi','Male',345)  into student(stu_id,stu_name,sex,Tot_marks) values (80,'brindha','Female',567)   SELECT * FROM dual;
+
+select*from student;
+
+SAVEPOINT s1;
+
+delete from student where stu_id=80;
+
+delete from student where stu_id=70;
+
+ROLLBACK to s1;
+
+select*from student;
+
+delete from student where stu_id=70;
+
+delete from student where stu_id=80;
+
+commit;
+
+select *from student;
+
+rollback to s1;
+
+
+6)set serveroutput on;
+
+ //square //cube
+
+
+    DECLARE
+      a NUMBER:= 5;
+      b NUMBER:= 6;
+    BEGIN
+      CASE a
+      when 5 then dbms_output.put_line(' Square of (5): ' || a*a);
+       END CASE;
+         CASE b
+       when 6 then dbms_output.put_line(' cube of (6): ' || b*b*b);
+     END CASE;
+  END;
+   /
+Square of (5): 25
+cube of (6): 216
+
+
+
