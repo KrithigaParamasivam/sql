@@ -1,0 +1,68 @@
+1) create table myemp(Eno number(6) PRIMARY KEY,Ename varchar2(30) NOT NULL,Deptno number(4) NOT NULL,Esal number(8,2));
+
+alter table myemp add experience number(2) NOT  NULL;
+
+insert all
+    into myemp(Eno,Ename,Deptno,Esal,Experience) values(101,'krithi',10,15000,2)
+    into myemp(Eno,Ename,Deptno,Esal,Experience) values(102,'divya',20,10000,5)
+    into myemp(Eno,Ename,Deptno,Esal,Experience) values(103,'haritha',30,8000,1)
+    into myemp(Eno,Ename,Deptno,Esal,Experience) values(104,'sathish',40,4000,1)
+    into myemp(Eno,Ename,Deptno,Esal,Experience) values(105,'sakthi',50,13000,2)
+    select * from dual;
+
+2)  ALTER TABLE myemp ADD comm number(3) default null;
+    update myemp set comm=200 where Eno=102;
+    update myemp set comm=200 where Eno=103;
+    create table empcommnull as (select eno,ename,comm from myemp where comm IS NULL);
+
+4)CREATE OR REPLACE TRIGGER sat_sun_trigger BEFORE
+ INSERT OR UPDATE OR DELETE on myemp 
+  FOR EACH ROW
+  DECLARE
+  v_day DATE := TRUNC(SYSDATE);
+  BEGIN
+    IF TO_CHAR(v_day,'DY')IN ('SAT','SUN') THEN
+      dbms_output.put_line('Sorry Access on week-end days is denied');
+    END IF;
+  EXCEPTION
+  WHEN OTHERS THEN
+  dbms_output.put_line('Error is:'||SQLERRM);
+  END; 
+  
+
+insert into myemp values(106,'sara',60,16000,3,200);
+
+
+
+5)
+  1  DECLARE
+  2     d_id depart.depart_id%type := 80;
+  3     d_name depart.depart_name%type;
+  4    d_mid depart.manager_id%type;
+  5  BEGIN
+  6     SELECT depart_id,depart_name,manager_id into d_id,d_name,d_mid from depart
+  7     WHERE depart_id=d_id;
+  8     DBMS_OUTPUT.PUT_LINE ('Dept Id: '|| d_id);
+  9     DBMS_OUTPUT.PUT_LINE ('Dept Name: '|| d_name);
+ 10     DBMS_OUTPUT.PUT_LINE ('Manager Id: ' || d_mid);
+ 11  EXCEPTION
+ 12     WHEN no_data_found THEN
+ 13        dbms_output.put_line('No such Record with Dept_Id =80!');
+ 14         raise_application_error (-20001,'no record. No such Record with Dept_Id =80!');
+ 15     WHEN others THEN
+ 16        dbms_output.put_line('Error!');
+ 17        raise_application_error (-20002,'An error has occurred.');
+ 18* END;
+SQL> /
+
+6)CREATE TABLE ebill( cno varchar2(10) primary key,cname varchar2(30) NOT NULL,nounits number(4) NOT NULL,bamt number(8,2) )
+/
+
+desc ebill;
+
+INSERT ALL
+         INTO ebill (cno, cname,nounits,bamt) VALUES ('101', 'krithi', 1,'');
+          INTO ebill (cno, cname,nounits,bamt) VALUES ('102', 'sakthi', 2,'');
+          INTO ebill (cno, cname,nounits,bamt) VALUES ('103', 'babu', 30,'');
+          INTO ebill (cno, cname,nounits,bamt) VALUES ('104', 'hari', 14,'');
+         
