@@ -1,0 +1,252 @@
+
+1)Create a table myemp
+
+SQL> create table myemp(Eno number(6) PRIMARY KEY,Ename varchar2(30) NOT NULL,Deptno number(4) NOT NULL,Esal number(8,2));
+
+Table created.
+
+a) Add a new column experience with number datatype and with not null constraint.
+
+SQL> alter table myemp add experience number(2) NOT  NULL;
+
+Table altered.
+
+SQL> insert all
+  2      into myemp(Eno,Ename,Deptno,Esal,Experience) values(101,'krithi',10,15000,2)
+  3      into myemp(Eno,Ename,Deptno,Esal,Experience) values(102,'divya',20,10000,5)
+  4      into myemp(Eno,Ename,Deptno,Esal,Experience) values(103,'haritha',30,8000,1)
+  5      into myemp(Eno,Ename,Deptno,Esal,Experience) values(104,'sathish',40,4000,1)
+  6      into myemp(Eno,Ename,Deptno,Esal,Experience) values(105,'sakthi',50,13000,2)
+  7      select * from dual;
+
+5 rows created.
+
+SQL> select*from myemp;
+
+       ENO ENAME                              DEPTNO       ESAL EXPERIENCE
+---------- ------------------------------ ---------- ---------- ----------
+       101 krithi                                 10      15000          2
+       102 divya                                  20      10000          5
+       103 haritha                                30       8000          1
+       104 sathish                                40       4000          1
+       105 sakthi                                 50      13000          2
+
+
+b) update esal column of the table with null values whose esal value is between 5000-10000.
+
+SQL> update myemp set Esal=null where Esal >=5000 and Esal <=10000;
+
+2 rows updated.
+
+SQL> select*from myemp;
+
+       ENO ENAME                              DEPTNO       ESAL EXPERIENCE
+---------- ------------------------------ ---------- ---------- ----------
+       101 krithi                                 10      15000          2
+       102 divya                                  20                     5
+       103 haritha                                30                     1
+       104 sathish                                40       4000          1
+       105 sakthi                                 50      13000          2
+
+
+2.Add a new column comm in myemp with some null and not null values. Now,
+Create a new table ‘empcommnul’ by moving all null value-based rows from myemp to empcommnull.
+
+SQL> ALTER TABLE myemp ADD comm number(3) default null;
+
+Table altered.
+
+SQL> select*from myemp;
+
+       ENO ENAME                              DEPTNO       ESAL EXPERIENCE
+---------- ------------------------------ ---------- ---------- ----------
+      COMM
+----------
+       101 krithi                                 10      15000          2
+
+
+       102 divya                                  20                     5
+
+
+       103 haritha                                30                     1
+
+
+
+       ENO ENAME                              DEPTNO       ESAL EXPERIENCE
+---------- ------------------------------ ---------- ---------- ----------
+      COMM
+----------
+       104 sathish                                40       4000          1
+
+
+       105 sakthi                                 50      13000          2
+
+
+
+SQL> update myemp set comm=200 where Eno=102;
+
+1 row updated.
+
+SQL>     update myemp set comm=200 where Eno=103;
+
+1 row updated.
+
+SQL> select*from myemp;
+
+       ENO ENAME                              DEPTNO       ESAL EXPERIENCE
+---------- ------------------------------ ---------- ---------- ----------
+      COMM
+----------
+       101 krithi                                 10      15000          2
+
+
+       102 divya                                  20                     5
+       200
+
+       103 haritha                                30                     1
+       200
+
+
+       ENO ENAME                              DEPTNO       ESAL EXPERIENCE
+---------- ------------------------------ ---------- ---------- ----------
+      COMM
+----------
+       104 sathish                                40       4000          1
+
+
+       105 sakthi                                 50      13000          2
+
+
+
+SQL>  create table empcommnull as (select eno,ename,comm from myemp where comm IS NULL);
+
+Table created.
+
+SQL> desc empcommnull;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ ENO                                                NUMBER(6)
+ ENAME                                     NOT NULL VARCHAR2(30)
+ COMM                                               NUMBER(3)
+
+SQL> select*from empcommnull;
+
+       ENO ENAME                                COMM
+---------- ------------------------------ ----------
+       101 krithi
+       104 sathish
+       105 sakthi
+
+
+4) create a trigger with your own name for enforcing a constraint on insert or delete or update operations on of all
+ columns of myemp by denying the said operations on weekend days(Saturday and Sunday) with message ‘Sorry Access on week-end days is denied’.
+
+SQL> CREATE OR REPLACE TRIGGER weekend
+  2  BEFORE INSERT OR UPDATE OR DELETE on myemp
+  3    FOR EACH ROW
+  4    DECLARE
+  5    v_day DATE := TRUNC(SYSDATE);
+  6    ex_invalid  EXCEPTION;
+  7    BEGIN
+  8      IF TO_CHAR(v_day,'DY')IN ('SAT','SUN') THEN
+  9         RAISE ex_invalid;
+ 10      END IF;
+ 11      EXCEPTION
+ 12      WHEN ex_invalid THEN
+ 13        RAISE_APPLICATION_ERROR(-20001,'Sorry Access on week-end days is denied');
+ 14    END;
+ 15  /
+
+Trigger created.
+
+SQL> desc myemp;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ ENO                                       NOT NULL NUMBER(6)
+ ENAME                                     NOT NULL VARCHAR2(30)
+ DEPTNO                                    NOT NULL NUMBER(4)
+ ESAL                                               NUMBER(8,2)
+ EXPERIENCE                                NOT NULL NUMBER(2)
+ COMM                                               NUMBER(3)
+
+SQL> insert into myemp (Eno,Ename,Deptno,Esal,Experience,comm) values (108,'geetha',80,16000,2,400);
+insert into myemp (Eno,Ename,Deptno,Esal,Experience,comm) values (108,'geetha',80,16000,2,400)
+            *
+ERROR at line 1:
+ORA-20001: Sorry Access on week-end days is denied
+ORA-06512: at "SYSTEM.WEEKEND", line 10
+ORA-04088: error during execution of trigger 'SYSTEM.WEEKEND'
+
+
+SQL> set serveroutput on;
+
+5) Write any PL/SQL block which handles others exception in which reflects the error code and error message of the occurring exception.
+
+SQL> DECLARE
+  2         d_id depart.depart_id%type := 80;
+  3        d_name depart.depart_name%type;
+  4        d_mid depart.manager_id%type;
+  5      BEGIN
+  6         SELECT depart_id,depart_name,manager_id into d_id,d_name,d_mid from depart
+  7         WHERE depart_id=d_id;
+  8         DBMS_OUTPUT.PUT_LINE ('Dept Id: '|| d_id);
+  9         DBMS_OUTPUT.PUT_LINE ('Dept Name: '|| d_name);
+ 10        DBMS_OUTPUT.PUT_LINE ('Manager Id: ' || d_mid);
+ 11     EXCEPTION
+ 12        WHEN no_data_found THEN
+ 13           dbms_output.put_line('No such Record with Dept_Id =80!');
+ 14            raise_application_error (-20001,'no record. No such Record with Dept_Id =80!');
+ 15        WHEN others THEN
+ 16           dbms_output.put_line('Error!');
+ 17           raise_application_error (-20002,'An error has occurred.');
+ 18    END;
+ 19  /
+No such Record with Dept_Id =80!
+DECLARE
+*
+ERROR at line 1:
+ORA-20001: no record. No such Record with Dept_Id =80!
+ORA-06512: at line 14
+
+
+6)Create a table EBILL for the following specification.
+
+
+SQL> CREATE TABLE ebill( cno varchar2(10) primary key,cname varchar2(30) NOT NULL,nounits number(4) NOT NULL,bamt number(8,2));
+
+Table created.
+
+SQL> insert all into ebill values('C12','Krithi',150,'') into ebill values('C13','Bhuvi',100,'') into ebill values('C14','Brindha',200,'') select * from dual;
+
+3 rows created.
+
+SQL> select * from ebill;
+
+CNO        CNAME                             NOUNITS       BAMT
+---------- ------------------------------ ---------- ----------
+C12        Krithi                                   150
+C13        Bhuvi                                    100
+C14        Brindha                                  200
+
+select *
+from ebill;
+create procedure cal_bamt(in x varchar(10), out o decimal(8,2))
+begin
+declare done boolean default 0;
+declare uits int(4);
+declare amt_cur cursor for
+select nounits from ebill where cno=x;
+open amt_cur;
+fetch amt_cur into uits;
+if uits>200 then
+set o=(uits-200)*1.5+150;
+elseif uits>100 and uits<200 then
+set o=(uits-100)*1.5+50;
+else
+set o=uits*0.5;
+end if;
+close amt_cur;
+update ebill set bamt=o where cno=x;
+select * from ebill where cno=x;
+end
+/
